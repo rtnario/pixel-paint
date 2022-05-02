@@ -1,0 +1,13 @@
+#center-pane {
+    display: grid;
+    width: 768px;
+    height: 768px;
+    background-color: lightgray;
+    /* grid-template-columns: 1fr; */
+    /* grid-template-rows: 1fr; */
+}
+
+.canvas-square {
+    /* border-style: solid; */
+    /* border-width: 1px; */
+}
