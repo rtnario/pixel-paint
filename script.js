@@ -29,7 +29,7 @@ function generateGrid() {
 
     for (let i = 0; i < numOfSquares; i++) {
         const square = document.createElement('div');
-        square.classList = "canvas-square";
+        square.classList = `canvas-square cell-${i}`;
         centerPane.append(square);
     }
 
@@ -41,15 +41,110 @@ function generateGrid() {
         return "#" + randomColor;
     }
 
+    const rect = centerPane.getBoundingClientRect();
+
     const squares = document.querySelectorAll('.canvas-square');
 
+    let cellCoordinates = [];
+
     squares.forEach(square => {
+        const bounds = square.getBoundingClientRect();
+        cellCoordinates.push([[bounds.left, bounds.right], [bounds.top, bounds.bottom]]);
+    });
+
+    console.log(cellCoordinates);
+
+    let isMouseDown = false;
+
+    squares.forEach(square => {
+        square.ondragstart = () => { return false; }
+
+        square.addEventListener('mousedown', () => {
+            square.style.backgroundColor = "black";
+            isMouseDown = true;
+        });
+
         square.addEventListener('mouseover', () => {
-            square.style.backgroundColor = "black";
-        })
-        square.addEventListener('touchmove', () => {
-            square.style.backgroundColor = "black";
-        }, false)
+            if (isMouseDown) {
+                square.style.backgroundColor = "black";
+            }
+        });
+
+        square.addEventListener('mouseup', () => {
+            isMouseDown = false;
+        });
+
+        // square.addEventListener('mousemove', () => {
+        //     console.log("mousemove");
+        //     square.style.backgroundColor = "black";
+        // })
+        // square.addEventListener('touchstart', () => {
+        //     console.log("touchstart");
+        //     square.style.backgroundColor = "black";
+        // }, false)
+        // square.addEventListener('touchmove', () => {
+        //     console.log("touchmove");
+        //     square.style.backgroundColor = "black";
+        // }, false)
+
+        square.addEventListener('touchmove', e => {
+            // const currentPixel = e.currentTarget.getBoundingClientRect();
+            // console.log("currentPixelWidth: " + (currentPixel.right - currentPixel.left));
+            // console.log("currentPixelHeight: " + (currentPixel.bottom - currentPixel.top));
+
+            // console.log(currentPixel.top);
+            // console.log(currentPixel.left);
+            // console.log(currentPixel.bottom);
+            // console.log(currentPixel.right);
+            
+            // let touchX = e.touches[0].clientX - rect.left;
+            // let touchY = e.touches[0].clientY - rect.top;
+
+            // console.log("touchX: " + (e.touches[0].clientX - rect.left));
+            // console.log("touchY: " + (e.touches[0].clientY - rect.top));
+
+            let currentPixel = e.currentTarget.getBoundingClientRect();
+
+            // console.log(currentPixel.top);
+            // console.log(currentPixel.left);
+            // console.log(currentPixel.bottom);
+            // console.log(currentPixel.right);
+        });
+    });
+
+    // centerPane.addEventListener('mousemove', e => {
+    //     const rect = e.currentTarget.getBoundingClientRect();
+    //     console.log(e.clientX - rect.left);
+    //     console.log(e.clientY - rect.top);
+    // });
+    centerPane.addEventListener('touchmove', e => {
+        let touchX = e.touches[0].clientX;
+        let touchY = e.touches[0].clientY;
+
+        // console.log("touchX: " + touchX);
+        // console.log("touchY: " + touchY);
+
+        for (let i = 0; i < numOfSquares; i++) {
+            if (touchX >= cellCoordinates[i][0][0] &&
+                touchX < cellCoordinates[i][0][1] &&
+                touchY >= cellCoordinates[i][1][0] &&
+                touchY < cellCoordinates[i][1][1]) {
+                const hoverCell = document.querySelector(`.cell-${i}`)
+
+                if (hoverCell.style.backgroundColor !== "black") {
+                    hoverCell.style.backgroundColor = "black";
+                }
+            }
+        }
+
+        // const rect = e.currentTarget.getBoundingClientRect();
+        // console.log("touchX: " + (e.touches[0].clientX - rect.left));
+        // console.log("touchY: " + (e.touches[0].clientY - rect.top));
+
+        // let touchX = e.touches[0].clientX - rect.left;
+        // let touchY = e.touches[0].clientY - rect.top;
+
+        // if ()
     });
 }
 
