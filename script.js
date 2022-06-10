@@ -47,6 +47,9 @@ function generateGrid() {
         square.addEventListener('mouseover', () => {
             square.style.backgroundColor = "black";
         })
+        square.addEventListener('touchmove', () => {
+            square.style.backgroundColor = "black";
+        }, false)
     });
 }
 
