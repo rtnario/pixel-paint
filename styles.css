@@ -3,10 +3,15 @@
     box-sizing: border-box;
 }
 
+:root {
+    --vmin: 0;
+}
+
 .flex-landscape {
     display: flex;
     width: 100vw;
-    height: 100vh;
+    /* height: 100vh; */
+    height: calc(var(--vmin, 1vmin) * 100);
 }
 
 .panel-left {
