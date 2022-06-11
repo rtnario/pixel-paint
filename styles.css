@@ -1,0 +1,43 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.flex-landscape {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+.panel-left {
+    flex-grow: 1;
+}
+
+.flex-portrait {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.btn-top {
+    margin-bottom: 1em;
+    visibility: hidden;
+}
+
+.canvas {
+    min-width: 89vmin;
+    min-height: 89vmin;
+    box-shadow: 0 0 5px black;
+}
+
+.panel-bottom {
+    text-align: right;
+}
+
+.btn-bottom {
+    margin-top: 1em;
+}
+
+.panel-right {
+    flex-grow: 1;
+}

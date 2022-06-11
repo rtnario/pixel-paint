@@ -5,16 +5,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PixelPaint</title>
-    <link rel="stylesheet" href="./style.css">
+    <link href="./styles.css" rel="stylesheet">
     <script src="./script.js" defer></script>
 </head>
 <body>
-    <div id="container">
-        <div id="left-pane"></div>
-        <div id="center-pane"></div>
-        <div id="right-pane">
-            <button id="btn-reset" class="button">Reset</button>
-            <button id="btn-clear" class="button">Clear</button>
+    <div class="flex-landscape">
+        <div class="panel-left">
+        </div>
+        <div class="flex-portrait">
+            <div class="panel-top">
+                <button class="btn-top">Pad</button>
+            </div>
+            <div class="canvas">
+            </div>
+            <div class="panel-bottom">
+                <button class="btn-clear btn-bottom">Clear</button>
+                <button class="btn-reset btn-bottom">Reset</button>
+            </div>
+        </div>
+        <div class="panel-right">
         </div>
     </div>
 </body>
