@@ -7,6 +7,10 @@
     --vmin: 0;
 }
 
+body {
+    overscroll-behavior: contain;
+}
+
 .flex-landscape {
     display: flex;
     width: 100vw;
