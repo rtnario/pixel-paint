@@ -7,8 +7,9 @@
     --vmin: 0;
 }
 
+html,
 body {
-    overscroll-behavior: contain;
+    overscroll-behavior-y: contain;
 }
 
 .flex-landscape {
