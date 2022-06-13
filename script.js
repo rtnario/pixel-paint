@@ -1,6 +1,12 @@
 const vh = window.innerHeight * 0.01;
 document.documentElement.style.setProperty('--vh', `${vh}px`);
 
+const app = document.querySelector('html');
+
+app.addEventListener('touchmove', e => {
+    e.preventDefault();
+});
+
 const centerPane = document.querySelector('.canvas');
 
 let gridSize = 0;
@@ -76,58 +82,13 @@ function generateGrid() {
         square.addEventListener('mouseup', () => {
             isMouseDown = false;
         });
-
-        // square.addEventListener('mousemove', () => {
-        //     console.log("mousemove");
-        //     square.style.backgroundColor = "black";
-        // })
-        // square.addEventListener('touchstart', () => {
-        //     console.log("touchstart");
-        //     square.style.backgroundColor = "black";
-        // }, false)
-        // square.addEventListener('touchmove', () => {
-        //     console.log("touchmove");
-        //     square.style.backgroundColor = "black";
-        // }, false)
-
-        square.addEventListener('touchmove', e => {
-            // const currentPixel = e.currentTarget.getBoundingClientRect();
-            // console.log("currentPixelWidth: " + (currentPixel.right - currentPixel.left));
-            // console.log("currentPixelHeight: " + (currentPixel.bottom - currentPixel.top));
-
-            // console.log(currentPixel.top);
-            // console.log(currentPixel.left);
-            // console.log(currentPixel.bottom);
-            // console.log(currentPixel.right);
-            
-            // let touchX = e.touches[0].clientX - rect.left;
-            // let touchY = e.touches[0].clientY - rect.top;
-
-            // console.log("touchX: " + (e.touches[0].clientX - rect.left));
-            // console.log("touchY: " + (e.touches[0].clientY - rect.top));
-
-            // let currentPixel = e.currentTarget.getBoundingClientRect();
-
-            // console.log(currentPixel.top);
-            // console.log(currentPixel.left);
-            // console.log(currentPixel.bottom);
-            // console.log(currentPixel.right);
-        });
     });
 
-    // centerPane.addEventListener('mousemove', e => {
-    //     const rect = e.currentTarget.getBoundingClientRect();
-    //     console.log(e.clientX - rect.left);
-    //     console.log(e.clientY - rect.top);
-    // });
     centerPane.addEventListener('touchmove', e => {
-        e.preventDefault();
+        // e.preventDefault();
 
         let touchX = e.touches[0].clientX;
         let touchY = e.touches[0].clientY;
-
-        // console.log("touchX: " + touchX);
-        // console.log("touchY: " + touchY);
 
         for (let i = 0; i < numOfSquares; i++) {
             if (touchX >= cellCoordinates[i][0][0] &&
@@ -141,15 +102,6 @@ function generateGrid() {
                 }
             }
         }
-
-        // const rect = e.currentTarget.getBoundingClientRect();
-        // console.log("touchX: " + (e.touches[0].clientX - rect.left));
-        // console.log("touchY: " + (e.touches[0].clientY - rect.top));
-
-        // let touchX = e.touches[0].clientX - rect.left;
-        // let touchY = e.touches[0].clientY - rect.top;
-
-        // if ()
     });
 }
 
@@ -181,14 +133,3 @@ btnClear.addEventListener('click', () => {
 });
 
 generateGrid();
-
-function preventDefault(e){
-    e.preventDefault();
-}
-
-function disableScroll(){
-    document.body.addEventListener('touchmove', preventDefault, { passive: false });
-}
-function enableScroll(){
-    document.body.removeEventListener('touchmove', preventDefault);
-}
