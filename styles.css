@@ -3,20 +3,6 @@
     box-sizing: border-box;
 }
 
-/* scroll fix for non-safari browsers */
-html,
-body {
-    overscroll-behavior-y: none;
-}
-
-/* scroll fix for safari */
-body > .safariscrollfix {
-    width: 100vw;
-    height: calc(var(--vh, 1vh) * 100);
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-}
-
 .flex-landscape {
     display: flex;
     width: 100vw;

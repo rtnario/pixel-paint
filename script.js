@@ -55,8 +55,6 @@ function generateGrid() {
         cellCoordinates.push([[bounds.left, bounds.right], [bounds.top, bounds.bottom]]);
     });
 
-    console.log(cellCoordinates);
-
     let isMouseDown = false;
 
     squares.forEach(square => {
@@ -76,13 +74,11 @@ function generateGrid() {
         square.addEventListener('mouseup', () => {
             isMouseDown = false;
         });
-
-        square.addEventListener('touchmove', e => {
-
-        });
     });
 
     centerPane.addEventListener('touchmove', e => {
+        e.preventDefault();
+
         let touchX = e.touches[0].clientX;
         let touchY = e.touches[0].clientY;
 
