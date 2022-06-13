@@ -165,6 +165,10 @@ const btnReset = document.querySelector('.btn-reset');
 
 btnReset.addEventListener('click', () => {
     validNum = false;
+
+    const canvasNode = document.querySelector('.canvas');
+    canvasNode.innerHTML = '';
+
     generateGrid();
 });
 

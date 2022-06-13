@@ -2,20 +2,28 @@
     margin: 0;
     box-sizing: border-box;
 }
-
-:root {
-    --vmin: 0;
-}
-
+/* 
 html,
 body {
-    overscroll-behavior-y: contain;
+    overscroll-behavior-y: none;
 }
 
 .flex-landscape {
     display: flex;
     width: 100vw;
     height: calc(var(--vh, 1vh) * 100);
+}
+*/
+body {
+    overflow: hidden;
+}
+
+.flex-landscape {
+    display: flex;
+    height: calc(var(--vh, 1vh) * 100);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100vw;
 }
 
 .panel-left {
