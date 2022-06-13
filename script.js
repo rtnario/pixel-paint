@@ -76,6 +76,10 @@ function generateGrid() {
         square.addEventListener('mouseup', () => {
             isMouseDown = false;
         });
+
+        square.addEventListener('touchmove', e => {
+
+        });
     });
 
     centerPane.addEventListener('touchmove', e => {
