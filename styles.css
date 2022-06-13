@@ -43,6 +43,7 @@ body > .safariscrollfix {
     min-width: 89vmin;
     min-height: 89vmin;
     box-shadow: 0 0 5px black;
+    touch-action: none;
 }
 
 .panel-bottom {
