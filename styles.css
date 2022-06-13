@@ -2,29 +2,25 @@
     margin: 0;
     box-sizing: border-box;
 }
-/* 
+
+/* scroll fix for non-safari browsers */
 html,
 body {
     overscroll-behavior-y: none;
 }
 
-.flex-landscape {
-    display: flex;
+/* scroll fix for safari */
+body > .safariscrollfix {
     width: 100vw;
-    height: calc(var(--vh, 1vh) * 100);
-}
-*/
-body {
-    overflow: hidden;
-    touch-action: none;
+    height: 100vh;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 .flex-landscape {
     display: flex;
-    height: calc(var(--vh, 1vh) * 100);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
     width: 100vw;
+    height: calc(var(--vh, 1vh) * 100);
 }
 
 .panel-left {
