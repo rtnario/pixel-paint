@@ -1,12 +1,6 @@
 const vh = window.innerHeight * 0.01;
 document.documentElement.style.setProperty('--vh', `${vh}px`);
 
-const app = document.querySelector('html');
-
-app.addEventListener('touchmove', e => {
-    e.preventDefault();
-});
-
 const centerPane = document.querySelector('.canvas');
 
 let gridSize = 0;
@@ -85,7 +79,7 @@ function generateGrid() {
     });
 
     centerPane.addEventListener('touchmove', e => {
-        // e.preventDefault();
+        e.preventDefault();
 
         let touchX = e.touches[0].clientX;
         let touchY = e.touches[0].clientY;
