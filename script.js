@@ -106,7 +106,7 @@ function generateGrid() {
             // console.log("touchX: " + (e.touches[0].clientX - rect.left));
             // console.log("touchY: " + (e.touches[0].clientY - rect.top));
 
-            let currentPixel = e.currentTarget.getBoundingClientRect();
+            // let currentPixel = e.currentTarget.getBoundingClientRect();
 
             // console.log(currentPixel.top);
             // console.log(currentPixel.left);
@@ -121,6 +121,8 @@ function generateGrid() {
     //     console.log(e.clientY - rect.top);
     // });
     centerPane.addEventListener('touchmove', e => {
+        e.preventDefault();
+
         let touchX = e.touches[0].clientX;
         let touchY = e.touches[0].clientY;
 
