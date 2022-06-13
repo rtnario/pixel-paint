@@ -83,8 +83,6 @@ function generateGrid() {
     });
 
     centerPane.addEventListener('touchmove', e => {
-        e.preventDefault();
-
         let touchX = e.touches[0].clientX;
         let touchY = e.touches[0].clientY;
 
@@ -131,14 +129,3 @@ btnClear.addEventListener('click', () => {
 });
 
 generateGrid();
-
-function preventDefault(e){
-    e.preventDefault();
-}
-
-function disableScroll(){
-    document.body.addEventListener('touchmove', preventDefault, { passive: false });
-}
-function enableScroll(){
-    document.body.removeEventListener('touchmove', preventDefault);
-}
