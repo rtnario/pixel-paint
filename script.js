@@ -1,10 +1,16 @@
-const vh = window.innerHeight * 0.01;
-document.documentElement.style.setProperty('--vh', `${vh}px`);
+function calculateAndSetAvailableViewportHeight() {
+    document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+}
+
+calculateAndSetAvailableViewportHeight();
 
 const centerPane = document.querySelector('.canvas');
 
 let gridSize = 0;
 let validNum = false;
+
+let numOfSquares = 0;
+let cellCoordinates = [];
 
 function generateGrid() {
     while (!validNum) {
@@ -28,7 +34,7 @@ function generateGrid() {
         gridTemplateRows += "1fr ";
     }
 
-    let numOfSquares = gridSize * gridSize;
+    numOfSquares = gridSize * gridSize;
 
     for (let i = 0; i < numOfSquares; i++) {
         const square = document.createElement('div');
@@ -48,12 +54,14 @@ function generateGrid() {
 
     const squares = document.querySelectorAll('.canvas-square');
 
-    let cellCoordinates = [];
+    cellCoordinates = [];
 
     squares.forEach(square => {
         const bounds = square.getBoundingClientRect();
         cellCoordinates.push([[bounds.left, bounds.right], [bounds.top, bounds.bottom]]);
     });
+
+    console.log(cellCoordinates);
 
     let isMouseDown = false;
 
@@ -76,25 +84,47 @@ function generateGrid() {
         });
     });
 
-    centerPane.addEventListener('touchmove', e => {
-        e.preventDefault();
+    centerPane.addEventListener('touchmove', paintCoordinates);
 
-        let touchX = e.touches[0].clientX;
-        let touchY = e.touches[0].clientY;
+    // centerPane.addEventListener('touchmove', e => {
+    //     e.preventDefault();
 
-        for (let i = 0; i < numOfSquares; i++) {
-            if (touchX >= cellCoordinates[i][0][0] &&
-                touchX < cellCoordinates[i][0][1] &&
-                touchY >= cellCoordinates[i][1][0] &&
-                touchY < cellCoordinates[i][1][1]) {
-                const hoverCell = document.querySelector(`.cell-${i}`)
+    //     let touchX = e.touches[0].clientX;
+    //     let touchY = e.touches[0].clientY;
 
-                if (hoverCell.style.backgroundColor !== "black") {
-                    hoverCell.style.backgroundColor = "black";
-                }
+    //     for (let i = 0; i < numOfSquares; i++) {
+    //         if (touchX >= cellCoordinates[i][0][0] &&
+    //             touchX < cellCoordinates[i][0][1] &&
+    //             touchY >= cellCoordinates[i][1][0] &&
+    //             touchY < cellCoordinates[i][1][1]) {
+    //             const hoverCell = document.querySelector(`.cell-${i}`)
+
+    //             if (hoverCell.style.backgroundColor !== "black") {
+    //                 hoverCell.style.backgroundColor = "black";
+    //             }
+    //         }
+    //     }
+    // });
+}
+
+function paintCoordinates(event) {
+    event.preventDefault();
+
+    let touchX = event.touches[0].clientX;
+    let touchY = event.touches[0].clientY;
+    
+    for (let i = 0; i < numOfSquares; i++) {
+        if (touchX >= cellCoordinates[i][0][0] &&
+            touchX < cellCoordinates[i][0][1] &&
+            touchY >= cellCoordinates[i][1][0] &&
+            touchY < cellCoordinates[i][1][1]) {
+            const hoverCell = document.querySelector(`.cell-${i}`)
+    
+            if (hoverCell.style.backgroundColor !== "black") {
+                hoverCell.style.backgroundColor = "black";
             }
         }
-    });
+    }
 }
 
 // window.addEventListener('resize', () => {
