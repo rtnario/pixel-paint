@@ -32,6 +32,11 @@
     touch-action: none;
 }
 
+.cell-border {
+    border-bottom: 0.1px solid gray;
+    border-right: 0.1px solid gray;
+}
+
 .panel-bottom {
     text-align: right;
 }

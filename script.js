@@ -37,8 +37,6 @@ function appendCellsToCanvas() {
     for (let cellIndex = 0; cellIndex < numOfCells; cellIndex++) {
         const cell = document.createElement('div');
         cell.classList = `canvas-cell cell-${cellIndex}`;
-        cell.style.borderBottom = "0.1px solid gray";
-        cell.style.borderRight = "0.1px solid gray";
         centerPane.append(cell);
     }
 }
@@ -116,10 +114,19 @@ function generateGrid() {
     addTouchListeners();
 }
 
+const btnGrid = document.querySelector('.btn-grid');
+btnGrid.addEventListener('click', () => {
+    const cells = document.querySelectorAll('.canvas-cell');
+
+    cells.forEach(cell => {
+        cell.classList.toggle('cell-border');
+    });
+});
+
 const btnClear = document.querySelector('.btn-clear');
 btnClear.addEventListener('click', () => { clearGrid() });
-const btnReset = document.querySelector('.btn-reset');
 
+const btnReset = document.querySelector('.btn-reset');
 btnReset.addEventListener('click', () => {
     validNum = false;
     const canvasNode = document.querySelector('.canvas');
