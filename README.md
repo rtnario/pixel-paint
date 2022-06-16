@@ -1,1 +1,1 @@
-This is an application of the lessons learned so far in The Odin Project's curriculum, taking the form of a grid-based drawing/sketching application.
+grid-based touch-supported pixel drawing app
