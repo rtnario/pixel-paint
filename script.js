@@ -3,23 +3,20 @@ function calculateAndSetToAvailableHeight() {
 }
 
 function checkIfValidGridSize() {
-    gridSize = parseInt(prompt("Input the number of squares per side (1-100)"));
-        
-    if (gridSize < 1 || gridSize > 100) {
-        alert("Value is out of range!");
-    }
+    while (!validNum) {
+        gridSize = parseInt(prompt("Input the number of cells per side (8-128)"));
 
-    else {
-        validNum = true;
+        if (gridSize < 8 || gridSize > 128) { alert("Value is out of range!") }
+        else { validNum = true }
     }
 }
 
 function clearGrid() {
-    const squares = document.querySelectorAll('.canvas-square');
-    squares.forEach(square => square.style.backgroundColor = "white");
+    const cells = document.querySelectorAll('.canvas-cell');
+    cells.forEach(cell => cell.style.backgroundColor = "white");
 }
 
-function populateCssGrid() {
+function populateGridTemplates() {
     let gridTemplateColumns = "";
     let gridTemplateRows = "";
 
@@ -33,64 +30,71 @@ function populateCssGrid() {
     centerPane.style.gridTemplateRows = gridTemplateRows;
 }
 
-function appendCanvas() {
-    numOfSquares = gridSize * gridSize;
+function appendCellsToCanvas() {
+    numOfCells = gridSize * gridSize;
     const centerPane = document.querySelector('.canvas');
 
-    for (let i = 0; i < numOfSquares; i++) {
-        const square = document.createElement('div');
-        square.classList = `canvas-square cell-${i}`;
-        centerPane.append(square);
+    for (let cellIndex = 0; cellIndex < numOfCells; cellIndex++) {
+        const cell = document.createElement('div');
+        cell.classList = `canvas-cell cell-${cellIndex}`;
+        centerPane.append(cell);
     }
 }
 
-function mapCoordinates() {
-    const squares = document.querySelectorAll('.canvas-square');
+function mapCellCoordinates() {
+    const cells = document.querySelectorAll('.canvas-cell');
     cellCoordinates = [];
 
-    squares.forEach(square => {
-        const bounds = square.getBoundingClientRect();
+    cells.forEach(cell => {
+        const bounds = cell.getBoundingClientRect();
         cellCoordinates.push([[bounds.left, bounds.right], [bounds.top, bounds.bottom]]);
     });
 }
 
 function addMouseListeners() {
-    const squares = document.querySelectorAll('.canvas-square');
+    const cells = document.querySelectorAll('.canvas-cell');
     let isMouseDown = false;
 
-    squares.forEach(square => {
-        square.addEventListener('mousedown', () => {
-            square.style.backgroundColor = "black";
+    cells.forEach(cell => {
+        cell.ondragstart = () => { return false; }
+
+        cell.addEventListener('mousedown', () => {
+            cell.style.backgroundColor = "black";
             isMouseDown = true;
         });
 
-        square.addEventListener('mouseover', () => {
-            if (isMouseDown) {
-                square.style.backgroundColor = "black";
-            }
+        cell.addEventListener('mouseover', () => {
+            if (isMouseDown) { cell.style.backgroundColor = "black" }
         });
 
-        square.addEventListener('mouseup', () => {
+        cell.addEventListener('mouseup', () => {
             isMouseDown = false;
         });
     });
 }
 
 function addTouchListeners() {
+    function isTouchWithinCellWidth(touchX, cellIndex) {
+        return (touchX >= cellCoordinates[cellIndex][0][0]) &&
+               (touchX < cellCoordinates[cellIndex][0][1]);
+    }
+
+    function isTouchWithinCellLength(touchY, cellIndex) {
+        return (touchY >= cellCoordinates[cellIndex][1][0]) &&
+               (touchY < cellCoordinates[cellIndex][1][1]);
+    }
+
     const centerPane = document.querySelector('.canvas');
 
     centerPane.addEventListener('touchmove', (event) => {
         event.preventDefault();
-
-        let touchX = event.touches[0].clientX;
-        let touchY = event.touches[0].clientY;
+        const touchX = event.touches[0].clientX;
+        const touchY = event.touches[0].clientY;
         
-        for (let i = 0; i < numOfSquares; i++) {
-            if (touchX >= cellCoordinates[i][0][0] &&
-                touchX < cellCoordinates[i][0][1] &&
-                touchY >= cellCoordinates[i][1][0] &&
-                touchY < cellCoordinates[i][1][1]) {
-                const hoverCell = document.querySelector(`.cell-${i}`)
+        for (let cellIndex = 0; cellIndex < numOfCells; cellIndex++) {
+            if (isTouchWithinCellWidth(touchX, cellIndex) &&
+                isTouchWithinCellLength(touchY, cellIndex)) {
+                const hoverCell = document.querySelector(`.cell-${cellIndex}`)
         
                 if (hoverCell.style.backgroundColor !== "black") {
                     hoverCell.style.backgroundColor = "black";
@@ -101,24 +105,17 @@ function addTouchListeners() {
 }
 
 function generateGrid() {
-    while (!validNum) {
-        checkIfValidGridSize();
-    }
-
+    checkIfValidGridSize();
     clearGrid();
-    populateCssGrid();
-    appendCanvas();
-    mapCoordinates();
+    populateGridTemplates();
+    appendCellsToCanvas();
+    mapCellCoordinates();
     addMouseListeners();
     addTouchListeners();
 }
 
 const btnClear = document.querySelector('.btn-clear');
-
-btnClear.addEventListener('click', () => {
-    clearGrid();
-});
-
+btnClear.addEventListener('click', () => { clearGrid() });
 const btnReset = document.querySelector('.btn-reset');
 
 btnReset.addEventListener('click', () => {
@@ -131,7 +128,7 @@ btnReset.addEventListener('click', () => {
 
 let gridSize = 0;
 let validNum = false;
-let numOfSquares = 0;
+let numOfCells = 0;
 let cellCoordinates = [];
 
 calculateAndSetToAvailableHeight();
