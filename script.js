@@ -1,31 +1,25 @@
-function calculateAndSetAvailableViewportHeight() {
+function calculateAndSetToAvailableHeight() {
     document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
 }
 
-calculateAndSetAvailableViewportHeight();
-
-const centerPane = document.querySelector('.canvas');
-
-let gridSize = 0;
-let validNum = false;
-
-let numOfSquares = 0;
-let cellCoordinates = [];
-
-function generateGrid() {
-    while (!validNum) {
-        gridSize = parseInt(prompt("Input the number of squares per side (1-100)"));
+function checkIfValidGridSize() {
+    gridSize = parseInt(prompt("Input the number of squares per side (1-100)"));
         
-        if (gridSize < 1 || gridSize > 100) {
-            alert("Value is out of range!");
-        }
-        else {
-            validNum = true;
-        }
+    if (gridSize < 1 || gridSize > 100) {
+        alert("Value is out of range!");
     }
 
-    clearGrid();
+    else {
+        validNum = true;
+    }
+}
 
+function clearGrid() {
+    const squares = document.querySelectorAll('.canvas-square');
+    squares.forEach(square => square.style.backgroundColor = "white");
+}
+
+function populateCssGrid() {
     let gridTemplateColumns = "";
     let gridTemplateRows = "";
 
@@ -34,38 +28,37 @@ function generateGrid() {
         gridTemplateRows += "1fr ";
     }
 
+    const centerPane = document.querySelector('.canvas');
+    centerPane.style.gridTemplateColumns = gridTemplateColumns;
+    centerPane.style.gridTemplateRows = gridTemplateRows;
+}
+
+function appendCanvas() {
     numOfSquares = gridSize * gridSize;
+    const centerPane = document.querySelector('.canvas');
 
     for (let i = 0; i < numOfSquares; i++) {
         const square = document.createElement('div');
         square.classList = `canvas-square cell-${i}`;
         centerPane.append(square);
     }
+}
 
-    centerPane.style.gridTemplateColumns = gridTemplateColumns;
-    centerPane.style.gridTemplateRows = gridTemplateRows;
-
-    const setBg = () => {
-        const randomColor = Math.floor(Math.random()*16777215).toString(16);
-        return "#" + randomColor;
-    }
-
-    const rect = centerPane.getBoundingClientRect();
-
+function mapCoordinates() {
     const squares = document.querySelectorAll('.canvas-square');
-
     cellCoordinates = [];
 
     squares.forEach(square => {
         const bounds = square.getBoundingClientRect();
         cellCoordinates.push([[bounds.left, bounds.right], [bounds.top, bounds.bottom]]);
     });
+}
 
+function addMouseListeners() {
+    const squares = document.querySelectorAll('.canvas-square');
     let isMouseDown = false;
 
     squares.forEach(square => {
-        square.ondragstart = () => { return false; }
-
         square.addEventListener('mousedown', () => {
             square.style.backgroundColor = "black";
             isMouseDown = true;
@@ -81,70 +74,44 @@ function generateGrid() {
             isMouseDown = false;
         });
     });
-
-    centerPane.addEventListener('touchmove', paintCoordinates);
-
-    // centerPane.addEventListener('touchmove', e => {
-    //     e.preventDefault();
-
-    //     let touchX = e.touches[0].clientX;
-    //     let touchY = e.touches[0].clientY;
-
-    //     for (let i = 0; i < numOfSquares; i++) {
-    //         if (touchX >= cellCoordinates[i][0][0] &&
-    //             touchX < cellCoordinates[i][0][1] &&
-    //             touchY >= cellCoordinates[i][1][0] &&
-    //             touchY < cellCoordinates[i][1][1]) {
-    //             const hoverCell = document.querySelector(`.cell-${i}`)
-
-    //             if (hoverCell.style.backgroundColor !== "black") {
-    //                 hoverCell.style.backgroundColor = "black";
-    //             }
-    //         }
-    //     }
-    // });
 }
 
-function paintCoordinates(event) {
-    event.preventDefault();
+function addTouchListeners() {
+    const centerPane = document.querySelector('.canvas');
 
-    let touchX = event.touches[0].clientX;
-    let touchY = event.touches[0].clientY;
-    
-    for (let i = 0; i < numOfSquares; i++) {
-        if (touchX >= cellCoordinates[i][0][0] &&
-            touchX < cellCoordinates[i][0][1] &&
-            touchY >= cellCoordinates[i][1][0] &&
-            touchY < cellCoordinates[i][1][1]) {
-            const hoverCell = document.querySelector(`.cell-${i}`)
-    
-            if (hoverCell.style.backgroundColor !== "black") {
-                hoverCell.style.backgroundColor = "black";
+    centerPane.addEventListener('touchmove', (event) => {
+        event.preventDefault();
+
+        let touchX = event.touches[0].clientX;
+        let touchY = event.touches[0].clientY;
+        
+        for (let i = 0; i < numOfSquares; i++) {
+            if (touchX >= cellCoordinates[i][0][0] &&
+                touchX < cellCoordinates[i][0][1] &&
+                touchY >= cellCoordinates[i][1][0] &&
+                touchY < cellCoordinates[i][1][1]) {
+                const hoverCell = document.querySelector(`.cell-${i}`)
+        
+                if (hoverCell.style.backgroundColor !== "black") {
+                    hoverCell.style.backgroundColor = "black";
+                }
             }
         }
+    });
+}
+
+function generateGrid() {
+    while (!validNum) {
+        checkIfValidGridSize();
     }
+
+    clearGrid();
+    populateCssGrid();
+    appendCanvas();
+    mapCoordinates();
+    addMouseListeners();
+    addTouchListeners();
 }
-
-// window.addEventListener('resize', () => {
-//     console.log(window.innerWidth);
-//     console.log(window.innerHeight);
-// });
-
-function clearGrid() {
-    const squares = document.querySelectorAll('.canvas-square');
-    squares.forEach(square => square.style.backgroundColor = "white");
-}
-
-const btnReset = document.querySelector('.btn-reset');
-
-btnReset.addEventListener('click', () => {
-    validNum = false;
-
-    const canvasNode = document.querySelector('.canvas');
-    canvasNode.innerHTML = '';
-
-    generateGrid();
-});
 
 const btnClear = document.querySelector('.btn-clear');
 
@@ -152,4 +119,25 @@ btnClear.addEventListener('click', () => {
     clearGrid();
 });
 
+const btnReset = document.querySelector('.btn-reset');
+
+btnReset.addEventListener('click', () => {
+    validNum = false;
+    const canvasNode = document.querySelector('.canvas');
+    canvasNode.innerHTML = '';
+
+    generateGrid();
+});
+
+let gridSize = 0;
+let validNum = false;
+let numOfSquares = 0;
+let cellCoordinates = [];
+
+calculateAndSetToAvailableHeight();
 generateGrid();
+
+// window.addEventListener('resize', () => {
+//     console.log(window.innerWidth);
+//     console.log(window.innerHeight);
+// });
