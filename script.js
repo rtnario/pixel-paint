@@ -37,6 +37,8 @@ function appendCellsToCanvas() {
     for (let cellIndex = 0; cellIndex < numOfCells; cellIndex++) {
         const cell = document.createElement('div');
         cell.classList = `canvas-cell cell-${cellIndex}`;
+        cell.style.borderBottom = "0.1px solid gray";
+        cell.style.borderRight = "0.1px solid gray";
         centerPane.append(cell);
     }
 }
