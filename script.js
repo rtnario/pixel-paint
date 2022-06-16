@@ -61,8 +61,6 @@ function generateGrid() {
         cellCoordinates.push([[bounds.left, bounds.right], [bounds.top, bounds.bottom]]);
     });
 
-    console.log(cellCoordinates);
-
     let isMouseDown = false;
 
     squares.forEach(square => {
